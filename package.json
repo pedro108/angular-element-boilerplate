@@ -3,13 +3,41 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "test": "ng test",
+    "start": "ng serve -o",
+    "build": "ng build --prod && npm run build:element",
+    "build:element": "gulp build:element",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "test": "jest --env=jsdom --verbose",
+    "test:deploy": "jest --env=jsdom --verbose --coverage",
+    "test:watch": "jest --env=jsdom --watch",
+    "coverage": "jest --env=jsdom --coverage"
   },
   "private": true,
+  "jest": {
+    "preset": "jest-preset-angular",
+    "roots": [
+      "<rootDir>/src/"
+    ],
+    "testURL": "http://localhost/",
+    "setupTestFrameworkScriptFile": "<rootDir>/src/setup-jest.ts",
+    "coveragePathIgnorePatterns": [
+      "<rootDir>/src/setup-jest.ts"
+    ],
+    "collectCoverageFrom": [
+      "**/*.{ts,tsx}",
+      "!**/*.d.ts",
+      "!**/node_modules/**",
+      "!**/report/**",
+      "!**/src/test/**",
+      "!src/main.ts",
+      "!src/main.element.ts",
+      "!src/test.ts",
+      "!src/polyfills.ts",
+      "!src/polyfills.element.ts"
+    ],
+    "testResultsProcessor": "jest-junit"
+  },
   "dependencies": {
     "@angular/animations": "^6.1.0",
     "@angular/common": "^6.1.0",
@@ -29,17 +57,12 @@
     "@angular/cli": "~6.2.7",
     "@angular/compiler-cli": "^6.1.0",
     "@angular/language-service": "^6.1.0",
-    "@types/jasmine": "~2.8.8",
-    "@types/jasminewd2": "~2.0.3",
+    "@types/jest": "^22.2.3",
     "@types/node": "~8.9.4",
     "codelyzer": "~4.3.0",
-    "jasmine-core": "~2.99.1",
-    "jasmine-spec-reporter": "~4.2.1",
-    "karma": "~3.0.0",
-    "karma-chrome-launcher": "~2.2.0",
-    "karma-coverage-istanbul-reporter": "~2.0.1",
-    "karma-jasmine": "~1.1.2",
-    "karma-jasmine-html-reporter": "^0.2.2",
+    "jest": "^22.4.3",
+    "jest-junit": "^3.6.0",
+    "jest-preset-angular": "^5.2.1",
     "protractor": "~5.4.0",
     "ts-node": "~7.0.0",
     "tslint": "~5.11.0",
